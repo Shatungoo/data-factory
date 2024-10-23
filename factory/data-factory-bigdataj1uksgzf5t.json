@@ -1,0 +1,9 @@
+{
+	"name": "data-factory-bigdataj1uksgzf5t",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "45d2379b-dfa2-4b0e-a8c0-f820025e94ad",
+		"tenantId": "b41b72d0-4e9f-4c26-8a69-f949f367c91d"
+	}
+}
