@@ -5,13 +5,22 @@
 			"referenceName": "AzureDataLakeStorage1",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"trigger_file_name": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "@dataset().destination",
-				"folderPath": "datalake"
+				"fileName": {
+					"value": "@concat('bronze/patient', \n    '/', formatDateTime(utcNow(), 'yyyy'), \n    '/',formatDateTime(utcNow(),'MM'),\n    '/',formatDateTime(utcNow(),'dd'),\n    '/', trigger().outputs.body.fileName\n    )",
+					"type": "Expression"
+				},
+				"folderPath": "bronze",
+				"fileSystem": "datalake"
 			}
 		},
 		"schema": {}
