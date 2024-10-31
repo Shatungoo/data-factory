@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"trigger_file_name": {
+			"destination": {
 				"type": "string"
 			}
 		},
@@ -16,7 +16,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@concat('bronze/patient', \n    '/', formatDateTime(utcNow(), 'yyyy'), \n    '/',formatDateTime(utcNow(),'MM'),\n    '/',formatDateTime(utcNow(),'dd'),\n    '/', trigger().outputs.body.fileName\n    )",
+					"value": "@dataset().destination",
 					"type": "Expression"
 				},
 				"folderPath": "bronze",
