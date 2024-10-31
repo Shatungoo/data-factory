@@ -43,7 +43,10 @@
 						"referenceName": "Source",
 						"type": "DatasetReference",
 						"parameters": {
-							"trigger_file_name": "@trigger().outputs.body.fileName"
+							"trigger_file_name": {
+								"value": "@pipeline().parameters.trigger_file_name",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -53,7 +56,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"destination": {
-								"value": "@concat('bronze/patient', '/', formatDateTime(utcNow(), 'yyyy'), '/',formatDateTime(utcNow(),'MM'),'/',formatDateTime(utcNow(),'dd'), '/', trigger().outputs.body.fileName)",
+								"value": "@pipeline().parameters.destination",
 								"type": "Expression"
 							}
 						}
