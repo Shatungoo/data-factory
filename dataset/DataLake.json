@@ -19,7 +19,6 @@
 					"value": "@dataset().destination",
 					"type": "Expression"
 				},
-				"folderPath": "bronze",
 				"fileSystem": "datalake"
 			}
 		},
