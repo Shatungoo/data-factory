@@ -52,12 +52,23 @@
 						"referenceName": "DataLake",
 						"type": "DatasetReference",
 						"parameters": {
-							"destination": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', trigger().outputs.body.fileName)"
+							"destination": {
+								"value": "@concat('bronze/patient', '/', formatDateTime(utcNow(), 'yyyy'), '/',formatDateTime(utcNow(),'MM'),'/',formatDateTime(utcNow(),'dd'), '/', trigger().outputs.body.fileName)",
+								"type": "Expression"
+							}
 						}
 					}
 				]
 			}
 		],
+		"parameters": {
+			"trigger_file_name": {
+				"type": "string"
+			},
+			"destination": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
