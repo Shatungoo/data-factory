@@ -19,7 +19,6 @@
 					"value": "@dataset().trigger_file_name",
 					"type": "Expression"
 				},
-				"folderPath": "patient-data-source",
 				"container": "patient-data-source"
 			}
 		},
