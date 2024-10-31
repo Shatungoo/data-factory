@@ -41,13 +41,19 @@
 				"inputs": [
 					{
 						"referenceName": "Source",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"trigger_file_name": "@trigger().outputs.body.fileName"
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "DataLake",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"destination": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', trigger().outputs.body.fileName)"
+						}
 					}
 				]
 			}
