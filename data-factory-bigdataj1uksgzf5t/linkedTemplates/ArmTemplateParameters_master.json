@@ -14,6 +14,12 @@
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"value": "https://datalakebigdataj1uksgzf5.dfs.core.windows.net/"
 		},
+		"patient-data-source-trigger_properties_PatientDataIngestion_parameters_trigger_file_name": {
+			"value": "@trigger().outputs.body.fileName"
+		},
+		"patient-data-source-trigger_properties_PatientDataIngestion_parameters_destination": {
+			"value": "@concat('bronze/patient', '/', formatDateTime(utcNow(), 'yyyy'), '/',formatDateTime(utcNow(),'MM'),'/',formatDateTime(utcNow(),'dd'), '/', trigger().outputs.body.fileName)"
+		},
 		"patient-data-source-trigger_properties_typeProperties_scope": {
 			"value": "/subscriptions/07805f6b-028d-4258-a365-1e6df3d8f6d4/resourceGroups/bigdataj1uksgzf5t_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdataj1uksgzf5t"
 		},

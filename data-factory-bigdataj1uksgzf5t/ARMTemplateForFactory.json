@@ -19,6 +19,14 @@
 			"type": "string",
 			"defaultValue": "https://datalakebigdataj1uksgzf5.dfs.core.windows.net/"
 		},
+		"patient-data-source-trigger_properties_PatientDataIngestion_parameters_trigger_file_name": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.body.fileName"
+		},
+		"patient-data-source-trigger_properties_PatientDataIngestion_parameters_destination": {
+			"type": "string",
+			"defaultValue": "@concat('bronze/patient', '/', formatDateTime(utcNow(), 'yyyy'), '/',formatDateTime(utcNow(),'MM'),'/',formatDateTime(utcNow(),'dd'), '/', trigger().outputs.body.fileName)"
+		},
 		"patient-data-source-trigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/07805f6b-028d-4258-a365-1e6df3d8f6d4/resourceGroups/bigdataj1uksgzf5t_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdataj1uksgzf5t"
@@ -75,7 +83,10 @@
 								"referenceName": "Source",
 								"type": "DatasetReference",
 								"parameters": {
-									"trigger_file_name": "@trigger().outputs.body.fileName"
+									"trigger_file_name": {
+										"value": "@pipeline().parameters.trigger_file_name",
+										"type": "Expression"
+									}
 								}
 							}
 						],
@@ -84,7 +95,10 @@
 								"referenceName": "DataLake",
 								"type": "DatasetReference",
 								"parameters": {
-									"destination": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', trigger().outputs.body.fileName)"
+									"destination": {
+										"value": "@pipeline().parameters.destination",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -92,6 +106,14 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"trigger_file_name": {
+						"type": "string"
+					},
+					"destination": {
+						"type": "string"
+					}
 				},
 				"annotations": []
 			},
@@ -207,7 +229,10 @@
 							"referenceName": "PatientDataIngestion",
 							"type": "PipelineReference"
 						},
-						"parameters": {}
+						"parameters": {
+							"trigger_file_name": "[parameters('patient-data-source-trigger_properties_PatientDataIngestion_parameters_trigger_file_name')]",
+							"destination": "[parameters('patient-data-source-trigger_properties_PatientDataIngestion_parameters_destination')]"
+						}
 					}
 				],
 				"type": "BlobEventsTrigger",

@@ -19,6 +19,14 @@
 			"type": "string",
 			"defaultValue": "https://datalakebigdataj1uksgzf5.dfs.core.windows.net/"
 		},
+		"patient-data-source-trigger_properties_PatientDataIngestion_parameters_trigger_file_name": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.body.fileName"
+		},
+		"patient-data-source-trigger_properties_PatientDataIngestion_parameters_destination": {
+			"type": "string",
+			"defaultValue": "@concat('bronze/patient', '/', formatDateTime(utcNow(), 'yyyy'), '/',formatDateTime(utcNow(),'MM'),'/',formatDateTime(utcNow(),'dd'), '/', trigger().outputs.body.fileName)"
+		},
 		"patient-data-source-trigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/07805f6b-028d-4258-a365-1e6df3d8f6d4/resourceGroups/bigdataj1uksgzf5t_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdataj1uksgzf5t"
@@ -58,6 +66,12 @@
 					},
 					"AzureDataLakeStorage1_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
+					},
+					"patient-data-source-trigger_properties_PatientDataIngestion_parameters_trigger_file_name": {
+						"value": "[parameters('patient-data-source-trigger_properties_PatientDataIngestion_parameters_trigger_file_name')]"
+					},
+					"patient-data-source-trigger_properties_PatientDataIngestion_parameters_destination": {
+						"value": "[parameters('patient-data-source-trigger_properties_PatientDataIngestion_parameters_destination')]"
 					},
 					"patient-data-source-trigger_properties_typeProperties_scope": {
 						"value": "[parameters('patient-data-source-trigger_properties_typeProperties_scope')]"
