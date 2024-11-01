@@ -237,7 +237,13 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/leanid_miron@epam.com/pipeline/copyFromBronzeToSilver.py"
+							"notebookPath": "/Users/leanid_miron@epam.com/pipeline/copyFromBronzeToSilver.py",
+							"baseParameters": {
+								"destination": {
+									"value": "@pipeline().parameters.destination",
+									"type": "Expression"
+								}
+							}
 						},
 						"linkedServiceName": {
 							"referenceName": "AzureDatabricks1",
@@ -245,9 +251,16 @@
 						}
 					},
 					{
-						"name": "CopyFromBronzeToSilver_copy1",
+						"name": "CopyFromSilverToGold",
 						"type": "DatabricksNotebook",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "CopyFromBronzeToSilver",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -257,7 +270,13 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/leanid_miron@epam.com/pipeline/copyFromBronzeToSilver.py"
+							"notebookPath": "/Users/leanid_miron@epam.com/pipeline/copyFromSilverToGold.py",
+							"baseParameters": {
+								"patient_id": {
+									"value": "@string(activity('CopyFromBronzeToSilver').output.runOutput)",
+									"type": "Expression"
+								}
+							}
 						},
 						"linkedServiceName": {
 							"referenceName": "AzureDatabricks1",
