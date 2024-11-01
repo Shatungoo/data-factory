@@ -19,6 +19,10 @@
 			"type": "string",
 			"defaultValue": "https://datalakebigdataj1uksgzf5.dfs.core.windows.net/"
 		},
+		"AzureDatabricks1_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1023-111009-z1v5msy"
+		},
 		"patient-data-source-trigger_properties_PatientDataIngestion_parameters_trigger_file_name": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.body.fileName"
@@ -62,6 +66,22 @@
 						"type": "SecureString",
 						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-3497716427547916.16.azuredatabricks.net",
+					"authentication": "MSI",
+					"workspaceResourceId": "/subscriptions/07805f6b-028d-4258-a365-1e6df3d8f6d4/resourceGroups/bigdataj1uksgzf5t_rg/providers/Microsoft.Databricks/workspaces/databricks-workspace-bigdataj1uksgzf5t",
+					"existingClusterId": "[parameters('AzureDatabricks1_properties_typeProperties_existingClusterId')]"
 				}
 			},
 			"dependsOn": []
@@ -137,7 +157,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy data1",
+						"name": "CopyFromSourceToBronze",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -196,6 +216,53 @@
 								}
 							}
 						]
+					},
+					{
+						"name": "CopyFromBronzeToSilver",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "CopyFromSourceToBronze",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/leanid_miron@epam.com/pipeline/copyFromBronzeToSilver.py"
+						},
+						"linkedServiceName": {
+							"referenceName": "AzureDatabricks1",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "CopyFromBronzeToSilver_copy1",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/leanid_miron@epam.com/pipeline/copyFromBronzeToSilver.py"
+						},
+						"linkedServiceName": {
+							"referenceName": "AzureDatabricks1",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"policy": {
@@ -213,7 +280,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Source')]",
-				"[concat(variables('factoryId'), '/datasets/DataLake')]"
+				"[concat(variables('factoryId'), '/datasets/DataLake')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricks1')]"
 			]
 		},
 		{
